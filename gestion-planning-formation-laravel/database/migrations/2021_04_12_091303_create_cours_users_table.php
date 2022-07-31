@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateCoursUsersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('cours_users', function (Blueprint $table) {
+            $table->unsignedBigInteger('cours_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('cours_id')
+                ->references('id')->on('cours');
+            $table->foreign('user_id')
+                ->references('id')->on('users');
+            $table->primary(['cours_id', 'user_id']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('cours_users', function (Blueprint $table) {
+           $table->dropForeign(['cours_id', 'user_id']);
+        });
+
+        Schema::dropIfExists('cours_users');
+    }
+}
